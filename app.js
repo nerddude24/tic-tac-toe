@@ -78,6 +78,15 @@ const Game = (function () {
 		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
 	};
 
+	const finishRound = () => {
+		playing = false;
+		console.log("Game is done!");
+	};
+
+	const hasActivePlayerWon = () => {
+		return false;
+	};
+
 	const playRound = () => {
 		let movesLeft = 9;
 		Gameboard.clearBoard();
@@ -112,8 +121,7 @@ const Game = (function () {
 			swapActivePlayer();
 		}
 
-		playing = false;
-		console.log("Game is done!");
+		finishRound();
 	};
 
 	return { getPlaying, playRound };
@@ -122,19 +130,19 @@ const Game = (function () {
 const ConsoleManager = (function () {
 	const printBoard = () => {
 		const board = Gameboard.getBoard();
-		console.log(board);
-		/* let printedString = "";
+
+		let printedString = "";
 
 		for (let i = 0; i < 3; i++) {
-			for (let j = 0; j < 3; j++) {
-				printedString += board[i + j] + " | ";
+			// split the array into thirds (3 rows)
+			for (let j = i * 3; j < i * 3 + 3; j++) {
+				const char = board[j] !== "" ? board[j] : " "; // add space instead of empty string
+				printedString += char;
 			}
-			printedString += "\n";
-			printedString += "----------";
 			printedString += "\n";
 		}
 
-		console.log(printedString); */
+		console.log(printedString);
 	};
 
 	return { printBoard };
