@@ -7,16 +7,22 @@ const Gameboard = (function () {
 
 	const isValidCellValue = (val) => [Gameboard.X, Gameboard.O].includes(val);
 
-	const fillCell = (cellNum, value) => {
+	const isFillableCell = (cellNum) => {
 		if (cellNum < 0 || cellNum > 8) {
 			console.warn("Cell number out of range!");
-			return;
+			return false;
 		}
 
 		if (board[cellNum] !== "") {
 			console.warn("Cell not empty!");
-			return;
+			return false;
 		}
+
+		return true;
+	};
+
+	const fillCell = (cellNum, value) => {
+		if (!isFillableCell(cellNum)) return;
 
 		if (!isValidCellValue(value)) {
 			console.warn("Invalid value!");
@@ -39,6 +45,7 @@ const Gameboard = (function () {
 		fillCell,
 		clearBoard,
 		isValidCellValue,
+		isFillableCell,
 		X,
 		O,
 	};
@@ -87,12 +94,20 @@ const Game = (function () {
 					`${activePlayer.name}'s move, where do you want to play? (1-9):`
 				);
 
-				if (cellNum < 1 || cellNum > 9) {
+				if (isNaN(cellNum)) {
+					alert("Not a number!");
+					continue;
+				}
+
+				if (!Gameboard.isFillableCell(cellNum - 1)) {
 					alert("Invalid move! try again.");
-				} else break;
+					continue;
+				}
+
+				break;
 			}
 
-			// -1 because arrays start at 0, and because 1-9 is easier to thing about
+			// -1 because arrays start at 0 and input starts from 1
 			Gameboard.fillCell(cellNum - 1, activePlayer.value);
 			swapActivePlayer();
 		}
