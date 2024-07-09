@@ -68,17 +68,38 @@ const Game = (function () {
 		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
 	};
 
-	const startRound = () => {
+	const playRound = () => {
 		let movesLeft = 9;
 		Gameboard.clearBoard();
 		playing = true;
 
-    for (let moveIdx = 1; moveIdx <= movesLeft; moveIdx++) {
-      
-    }
+		console.log("Game started!");
 
-    playing = false;
+		for (let moveIdx = 1; moveIdx <= movesLeft; moveIdx++) {
+			ConsoleDisplay.printBoard();
+		}
+
+		playing = false;
 	};
 
-	return { getPlaying };
+	return { getPlaying, playRound };
+})();
+
+const ConsoleDisplay = (function () {
+	const printBoard = () => {
+		const board = Gameboard.getBoard();
+		let printedString = "";
+
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
+				printedString += board[i * j] + " | ";
+			}
+			printedString += "\n";
+			printedString += "----------";
+		}
+
+		console.log(printedString);
+	};
+
+	return { printBoard };
 })();
