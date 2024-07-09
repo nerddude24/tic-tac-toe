@@ -9,7 +9,7 @@ const Gameboard = (function () {
 
 	const isValueInCells = (val, cells) => {
 		for (let i = 0; i < cells.length; i++) {
-			if (board[cells[i]] !== val) return false;
+			if (board[cells[i] - 1] !== val) return false;
 		}
 
 		return true;
@@ -74,7 +74,7 @@ const Game = (function () {
 	let playing = false;
 	const playerOne = createPlayer("Player One", Gameboard.X);
 	const playerTwo = createPlayer("Player Two", Gameboard.O);
-	let activePlayer = playerOne;
+	let activePlayer;
 
 	if (playerOne === null || playerTwo === null) {
 		console.error("One or both of the players are null, stopping game...");
@@ -87,9 +87,10 @@ const Game = (function () {
 		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
 	};
 
-	const finishRound = () => {
+	const finishRound = (msg = "Game is done!") => {
 		playing = false;
-		console.log("Game is done!");
+		console.log(msg);
+		ConsoleManager.printBoard();
 	};
 
 	const hasActivePlayerWon = () => {
@@ -114,6 +115,7 @@ const Game = (function () {
 		let movesLeft = 9;
 		Gameboard.clearBoard();
 		playing = true;
+		activePlayer = playerOne;
 
 		console.log("Game started!");
 
@@ -141,10 +143,16 @@ const Game = (function () {
 
 			// -1 because arrays start at 0 and input starts from 1
 			Gameboard.fillCell(cellNum - 1, activePlayer.value);
+
+			if (hasActivePlayerWon()) {
+				finishRound(`${activePlayer.name} Won!`);
+				return;
+			}
+
 			swapActivePlayer();
 		}
 
-		finishRound();
+		finishRound("It's a draw!");
 	};
 
 	return { getPlaying, playRound };
