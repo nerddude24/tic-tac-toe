@@ -7,6 +7,14 @@ const Gameboard = (function () {
 
 	const isValidCellValue = (val) => [Gameboard.X, Gameboard.O].includes(val);
 
+	const isValueInCells = (val, cells) => {
+		for (let i = 0; i < cells.length; i++) {
+			if (board[cells[i]] !== val) return false;
+		}
+
+		return true;
+	};
+
 	const isFillableCell = (cellNum) => {
 		if (cellNum < 0 || cellNum > 8) {
 			console.warn("Cell number out of range!");
@@ -46,6 +54,7 @@ const Gameboard = (function () {
 		clearBoard,
 		isValidCellValue,
 		isFillableCell,
+		isValueInCells,
 		X,
 		O,
 	};
@@ -84,7 +93,21 @@ const Game = (function () {
 	};
 
 	const hasActivePlayerWon = () => {
-		return false;
+		const val = activePlayer.value;
+
+		// check all possible winning conditions (i really couldn't think of a better way on my own smh)
+		if (
+			Gameboard.isValueInCells(val, [1, 2, 3]) ||
+			Gameboard.isValueInCells(val, [4, 5, 6]) ||
+			Gameboard.isValueInCells(val, [7, 8, 9]) ||
+			Gameboard.isValueInCells(val, [1, 4, 7]) ||
+			Gameboard.isValueInCells(val, [2, 5, 8]) ||
+			Gameboard.isValueInCells(val, [3, 6, 9]) ||
+			Gameboard.isValueInCells(val, [1, 5, 9]) ||
+			Gameboard.isValueInCells(val, [3, 5, 7])
+		)
+			return true;
+		else return false;
 	};
 
 	const playRound = () => {
