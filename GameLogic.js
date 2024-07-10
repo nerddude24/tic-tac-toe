@@ -22,6 +22,7 @@ const Gameboard = (function () {
 		}
 
 		if (board[cellNum] !== "") {
+			debugger;
 			console.warn("Cell not empty!");
 			return false;
 		}
@@ -38,7 +39,7 @@ const Gameboard = (function () {
 		}
 
 		board[cellNum] = value;
-		eventHandler.emit("boardChanged");
+		eventHandler.emit("boardChanged", board);
 	};
 
 	const clearBoard = () => {
@@ -48,7 +49,7 @@ const Gameboard = (function () {
 		}
 
 		board = ["", "", "", "", "", "", "", "", ""];
-		eventHandler.emit("boardChanged");
+		eventHandler.emit("boardChanged", board);
 	};
 
 	return {
@@ -84,18 +85,25 @@ const Game = (function () {
 		return {};
 	}
 
+	let movesLeft = 9;
+
 	const getPlaying = () => playing;
 
 	const _swapActivePlayer = () => {
 		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
 	};
 
-	const _finishRound = (msg = "Game is done!") => {
+	const _finishRoundCli = (msg = "Game is done!") => {
 		playing = false;
 		console.log(msg);
 	};
 
-	const _hasActivePlayerWon = () => {
+	const _finishRound = (msg = "Game is done!") => {
+		playing = false;
+		alert(msg);
+	};
+
+	const _isActivePlayerWinner = () => {
 		const val = activePlayer.value;
 
 		// check all possible winning conditions (i really couldn't think of a better way on my own smh)
@@ -113,11 +121,41 @@ const Game = (function () {
 		else return false;
 	};
 
-	const playRound = () => {
+	const startRound = () => {
 		console.log("Game started!");
 
 		Gameboard.clearBoard();
-		let movesLeft = 9;
+		movesLeft = 9;
+		playing = true;
+		activePlayer = playerOne;
+	};
+
+	const playTurn = (cellNum) => {
+		if (!playing) startRound();
+		if (!Gameboard.isFillableCell(cellNum)) return;
+
+		movesLeft--;
+
+		Gameboard.fillCell(cellNum, activePlayer.value);
+
+		if (_isActivePlayerWinner()) {
+			_finishRound(`${activePlayer.name} Won!`);
+			return;
+		}
+
+		if (movesLeft <= 0) {
+			_finishRound("It's a tie!");
+			return;
+		}
+
+		_swapActivePlayer();
+	};
+
+	const playCli = () => {
+		console.log("Game started!");
+
+		Gameboard.clearBoard();
+		movesLeft = 9;
 		playing = true;
 		activePlayer = playerOne;
 
@@ -142,18 +180,18 @@ const Game = (function () {
 			// -1 because arrays start at 0 and input starts from 1
 			Gameboard.fillCell(cellNum - 1, activePlayer.value);
 
-			if (_hasActivePlayerWon()) {
-				_finishRound(`${activePlayer.name} Won!`);
+			if (_isActivePlayerWinner()) {
+				_finishRoundCli(`${activePlayer.name} Won!`);
 				return;
 			}
 
 			_swapActivePlayer();
 		}
 
-		_finishRound("It's a draw!");
+		_finishRoundCli("It's a draw!");
 	};
 
-	return { getPlaying, playRound };
+	return { getPlaying, playCli, playTurn };
 })();
 
 // Console Handling
