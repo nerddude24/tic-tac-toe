@@ -156,7 +156,8 @@ const Game = (function () {
 	return { getPlaying, playRound };
 })();
 
-const ConsoleManager = (function () {
+// Console Handling
+(function () {
 	const printBoard = () => {
 		const board = Gameboard.getBoard();
 
