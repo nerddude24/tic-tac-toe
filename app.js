@@ -38,14 +38,17 @@ const Gameboard = (function () {
 		}
 
 		board[cellNum] = value;
+		eventHandler.emit("boardChanged");
 	};
 
 	const clearBoard = () => {
-		if (Game.getPlaying) {
+		if (Game.getPlaying()) {
 			console.warn("Tried to clear board during a game!");
 			return;
 		}
+
 		board = ["", "", "", "", "", "", "", "", ""];
+		eventHandler.emit("boardChanged");
 	};
 
 	return {
@@ -78,7 +81,7 @@ const Game = (function () {
 
 	if (playerOne === null || playerTwo === null) {
 		console.error("One or both of the players are null, stopping game...");
-		return;
+		return {};
 	}
 
 	const getPlaying = () => playing;
@@ -90,7 +93,6 @@ const Game = (function () {
 	const finishRound = (msg = "Game is done!") => {
 		playing = false;
 		console.log(msg);
-		ConsoleManager.printBoard();
 	};
 
 	const hasActivePlayerWon = () => {
@@ -112,21 +114,17 @@ const Game = (function () {
 	};
 
 	const playRound = () => {
-		let movesLeft = 9;
+		console.log("Game started!");
+
 		Gameboard.clearBoard();
+		let movesLeft = 9;
 		playing = true;
 		activePlayer = playerOne;
 
-		console.log("Game started!");
-
 		for (let moveIdx = 1; moveIdx <= movesLeft; moveIdx++) {
-			ConsoleManager.printBoard();
-
 			let cellNum;
 			while (true) {
-				cellNum = prompt(
-					`${activePlayer.name}'s move, where do you want to play? (1-9):`
-				);
+				cellNum = prompt(`${activePlayer.name}'s move (1-9):`);
 
 				if (isNaN(cellNum)) {
 					alert("Not a number!");
@@ -175,6 +173,8 @@ const ConsoleManager = (function () {
 
 		console.log(printedString);
 	};
+
+	eventHandler.subscribe("boardChanged", printBoard);
 
 	return { printBoard };
 })();
