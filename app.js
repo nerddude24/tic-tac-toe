@@ -176,5 +176,3 @@ const ConsoleManager = (function () {
 
 	eventHandler.subscribe("boardChanged", printBoard);
 })();
-
-Game.playRound();

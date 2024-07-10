@@ -1,0 +1,25 @@
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	min-height: 100vh;
+}
+
+#board {
+	display: grid;
+	grid-template-columns: repeat(3, 250px);
+	grid-template-rows: repeat(3, 250px);
+	background-color: black;
+	gap: 1em;
+
+	border: 8px solid #f0f0f0;
+	border-radius: 10px;
+
+	box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.board-cell {
+	background-color: white;
+	cursor: pointer;
+}
