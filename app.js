@@ -64,7 +64,7 @@ const Gameboard = (function () {
 })();
 
 const Game = (function () {
-	const createPlayer = function (name, value) {
+	const _createPlayer = function (name, value) {
 		if (!Gameboard.isValidCellValue(value)) {
 			console.error(
 				`Tried to create a player with an invalid value ('${value}')!`
@@ -75,8 +75,8 @@ const Game = (function () {
 	};
 
 	let playing = false;
-	const playerOne = createPlayer("Player One", Gameboard.X);
-	const playerTwo = createPlayer("Player Two", Gameboard.O);
+	const playerOne = _createPlayer("Player One", Gameboard.X);
+	const playerTwo = _createPlayer("Player Two", Gameboard.O);
 	let activePlayer;
 
 	if (playerOne === null || playerTwo === null) {
@@ -86,16 +86,16 @@ const Game = (function () {
 
 	const getPlaying = () => playing;
 
-	const swapActivePlayer = () => {
+	const _swapActivePlayer = () => {
 		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
 	};
 
-	const finishRound = (msg = "Game is done!") => {
+	const _finishRound = (msg = "Game is done!") => {
 		playing = false;
 		console.log(msg);
 	};
 
-	const hasActivePlayerWon = () => {
+	const _hasActivePlayerWon = () => {
 		const val = activePlayer.value;
 
 		// check all possible winning conditions (i really couldn't think of a better way on my own smh)
@@ -142,15 +142,15 @@ const Game = (function () {
 			// -1 because arrays start at 0 and input starts from 1
 			Gameboard.fillCell(cellNum - 1, activePlayer.value);
 
-			if (hasActivePlayerWon()) {
-				finishRound(`${activePlayer.name} Won!`);
+			if (_hasActivePlayerWon()) {
+				_finishRound(`${activePlayer.name} Won!`);
 				return;
 			}
 
-			swapActivePlayer();
+			_swapActivePlayer();
 		}
 
-		finishRound("It's a draw!");
+		_finishRound("It's a draw!");
 	};
 
 	return { getPlaying, playRound };
@@ -175,8 +175,6 @@ const ConsoleManager = (function () {
 	};
 
 	eventHandler.subscribe("boardChanged", printBoard);
-
-	return { printBoard };
 })();
 
 Game.playRound();
