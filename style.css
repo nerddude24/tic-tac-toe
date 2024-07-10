@@ -22,4 +22,10 @@ body {
 .board-cell {
 	background-color: white;
 	cursor: pointer;
+
+	font-size: 128px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
