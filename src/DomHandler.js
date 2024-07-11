@@ -22,13 +22,13 @@
 		}
 	}
 
-	function updateScore(scoreOne, scoreTwo) {
-		scoreOneElement.textContent = scoreOne;
-		scoreTwoElement.textContent = scoreTwo;
+	function updateScore(scores) {
+		scoreOneElement.textContent = scores[0];
+		scoreTwoElement.textContent = scores[1];
 	}
 
-	function updateName(nameOne, nameTwo) {
-		nameOneElement.textContent = nameOne;
-		nameTwoElement.textContent = nameTwo;
+	function updateName(names) {
+		nameOneElement.textContent = names[0];
+		nameTwoElement.textContent = names[1];
 	}
 })();
