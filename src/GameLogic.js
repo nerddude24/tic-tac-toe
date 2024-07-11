@@ -78,6 +78,7 @@ const Game = (function () {
 	let playing = false;
 	const playerOne = _createPlayer("Player One", Gameboard.X);
 	const playerTwo = _createPlayer("Player Two", Gameboard.O);
+	let firstPlayer = playerOne;
 	let activePlayer;
 
 	if (playerOne === null || playerTwo === null) {
@@ -89,8 +90,19 @@ const Game = (function () {
 
 	const getPlaying = () => playing;
 
+	const _isPlayerOneActive = () => activePlayer === playerOne;
+
 	const _swapActivePlayer = () => {
-		activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
+		activePlayer = _isPlayerOneActive() ? playerTwo : playerOne;
+		eventHandler.emit("activePlayerChanged", _isPlayerOneActive() ? 1 : 2);
+	};
+
+	const _swapFirstPlayer = () => {
+		firstPlayer = firstPlayer === playerOne ? playerTwo : playerOne;
+
+		let tmp = playerOne.value;
+		playerOne.value = playerTwo.value;
+		playerTwo.value = tmp;
 	};
 
 	const _finishRoundCli = (msg = "Game is done!") => {
@@ -101,6 +113,7 @@ const Game = (function () {
 	const _finishRound = (msg = "Game is done!") => {
 		playing = false;
 		eventHandler.emit("scoreChanged", [playerOne.score, playerTwo.score]);
+		_swapFirstPlayer();
 		alert(msg);
 	};
 
@@ -128,7 +141,8 @@ const Game = (function () {
 		Gameboard.clearBoard();
 		movesLeft = 9;
 		playing = true;
-		activePlayer = playerOne;
+		activePlayer = firstPlayer;
+		eventHandler.emit("activePlayerChanged", _isPlayerOneActive() ? 1 : 2);
 	};
 
 	const playTurn = (cellNum) => {
@@ -193,7 +207,7 @@ const Game = (function () {
 		_finishRoundCli("It's a draw!");
 	};
 
-	return { getPlaying, playCli, playTurn };
+	return { getPlaying, playCli, playTurn, startRound };
 })();
 
 // Console Handling
@@ -217,3 +231,5 @@ const Game = (function () {
 
 	eventHandler.subscribe("boardChanged", printBoard);
 })();
+
+Game.startRound();

@@ -9,6 +9,7 @@
 	eventHandler.subscribe("boardChanged", updateBoard);
 	eventHandler.subscribe("scoreChanged", updateScore);
 	eventHandler.subscribe("nameChanged", updateName);
+	eventHandler.subscribe("activePlayerChanged", updateActivePlayer);
 
 	boardCells.forEach((cell, idx) => {
 		cell.addEventListener("click", () => {
@@ -30,5 +31,16 @@
 	function updateName(names) {
 		getNameElement(statsOne).textContent = names[0];
 		getNameElement(statsTwo).textContent = names[1];
+	}
+
+	// active is 1 for first player, 2 for second player.
+	function updateActivePlayer(active) {
+		if (active === 1) {
+			statsOne.classList.add("blue-bg");
+			statsTwo.classList.remove("red-bg");
+		} else {
+			statsOne.classList.remove("blue-bg");
+			statsTwo.classList.add("red-bg");
+		}
 	}
 })();

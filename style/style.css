@@ -45,7 +45,7 @@ body {
 }
 
 #stats2 {
-	grid-area:stats2;
+	grid-area: stats2;
 }
 
 #stats1,
@@ -56,4 +56,12 @@ body {
 	align-items: center;
 
 	font-size: 48px;
+}
+
+.blue-bg {
+	background-color: aquamarine;
+}
+
+.red-bg {
+	background-color: red;
 }
