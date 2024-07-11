@@ -62,12 +62,12 @@ body {
 
 .blue-bg {
 	background-color: aquamarine;
-	transition: 0.3s;
+	transition: 0.5s;
 }
 
 .red-bg {
 	background-color: red;
-	transition: 0.3s;
+	transition: 0.5s;
 }
 
 .player-value {
@@ -77,7 +77,7 @@ body {
 .player-name {
 	width: 80%;
 	background-color: rgba(0, 0, 0, 0);
-	border: 1px solid rgba(0, 0, 0, 0.3);
+	border: 1px solid rgba(0, 0, 0, 0.4);
 	border-radius: 8px;
 
 	text-align: center;
