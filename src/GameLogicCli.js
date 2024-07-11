@@ -94,7 +94,6 @@ const Game = (function () {
 
 	const _swapActivePlayer = () => {
 		activePlayer = _isPlayerOneActive() ? playerTwo : playerOne;
-		eventHandler.emit("activePlayerChanged", _isPlayerOneActive() ? 1 : 2);
 	};
 
 	const _swapFirstPlayer = () => {
@@ -105,11 +104,10 @@ const Game = (function () {
 		playerTwo.value = tmp;
 	};
 
-	const _finishRound = (msg = "Game is done!") => {
+	const _finishRoundCli = (msg = "Game is done!") => {
 		playing = false;
-		eventHandler.emit("scoreChanged", [playerOne.score, playerTwo.score]);
 		_swapFirstPlayer();
-		alert(msg);
+		console.log(msg);
 	};
 
 	const _isActivePlayerWinner = () => {
@@ -130,39 +128,69 @@ const Game = (function () {
 		else return false;
 	};
 
-	const startRound = () => {
+	const playCli = () => {
 		console.log("Game started!");
 
 		Gameboard.clearBoard();
 		movesLeft = 9;
 		playing = true;
-		activePlayer = firstPlayer;
-		eventHandler.emit("activePlayerChanged", _isPlayerOneActive() ? 1 : 2);
-	};
+		activePlayer = playerOne;
 
-	const playTurn = (cellNum) => {
-		if (!playing) startRound();
-		if (!Gameboard.isFillableCell(cellNum)) return;
+		for (let moveIdx = 1; moveIdx <= movesLeft; moveIdx++) {
+			let cellNum;
+			while (true) {
+				cellNum = prompt(`${activePlayer.name}'s move (1-9):`);
 
-		movesLeft--;
+				if (isNaN(cellNum)) {
+					alert("Not a number!");
+					continue;
+				}
 
-		Gameboard.fillCell(cellNum, activePlayer.value);
+				if (!Gameboard.isFillableCell(cellNum - 1)) {
+					alert("Invalid move! try again.");
+					continue;
+				}
 
-		if (_isActivePlayerWinner()) {
-			activePlayer.score++;
-			_finishRound(`${activePlayer.name} Won!`);
-			return;
+				break;
+			}
+
+			// -1 because arrays start at 0 and input starts from 1
+			Gameboard.fillCell(cellNum - 1, activePlayer.value);
+
+			if (_isActivePlayerWinner()) {
+				_finishRoundCli(`${activePlayer.name} Won!`);
+				return;
+			}
+
+			_swapActivePlayer();
 		}
 
-		if (movesLeft <= 0) {
-			_finishRound("It's a tie!");
-			return;
-		}
-
-		_swapActivePlayer();
+		_finishRoundCli("It's a draw!");
 	};
 
-	return { getPlaying, playTurn, startRound };
+	return { getPlaying, playCli };
+})();
+
+// Console Handling
+(function () {
+	const printBoard = () => {
+		const board = Gameboard.getBoard();
+
+		let printedString = "";
+
+		for (let i = 0; i < 3; i++) {
+			// split the array into thirds (3 rows)
+			for (let j = i * 3; j < i * 3 + 3; j++) {
+				const char = board[j] !== "" ? board[j] : " "; // add space instead of empty string
+				printedString += char;
+			}
+			printedString += "\n";
+		}
+
+		console.log(printedString);
+	};
+
+	eventHandler.subscribe("boardChanged", printBoard);
 })();
 
 Game.startRound();
