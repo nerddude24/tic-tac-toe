@@ -90,6 +90,8 @@ const Game = (function () {
 
 	const getPlaying = () => playing;
 
+	const _getPlayers = () => [playerOne, playerTwo];
+
 	const _isPlayerOneActive = () => activePlayer === playerOne;
 
 	const _swapActivePlayer = () => {
@@ -107,8 +109,8 @@ const Game = (function () {
 
 	const _finishRound = (msg = "Game is done!") => {
 		playing = false;
-		eventHandler.emit("scoreChanged", [playerOne.score, playerTwo.score]);
 		_swapFirstPlayer();
+		eventHandler.emit("statsChanged", _getPlayers());
 		alert(msg);
 	};
 
@@ -137,6 +139,7 @@ const Game = (function () {
 		movesLeft = 9;
 		playing = true;
 		activePlayer = firstPlayer;
+		eventHandler.emit("statsChanged", _getPlayers());
 		eventHandler.emit("activePlayerChanged", _isPlayerOneActive() ? 1 : 2);
 	};
 

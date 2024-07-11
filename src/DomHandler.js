@@ -5,10 +5,10 @@
 	const statsTwo = document.querySelector("#stats2");
 	const getScoreElement = (stats) => stats.querySelector(".player-score");
 	const getNameElement = (stats) => stats.querySelector(".player-name");
+	const getValueElement = (stats) => stats.querySelector(".player-value");
 
 	eventHandler.subscribe("boardChanged", updateBoard);
-	eventHandler.subscribe("scoreChanged", updateScore);
-	eventHandler.subscribe("nameChanged", updateName);
+	eventHandler.subscribe("statsChanged", updatePlayerStats);
 	eventHandler.subscribe("activePlayerChanged", updateActivePlayer);
 
 	boardCells.forEach((cell, idx) => {
@@ -23,14 +23,18 @@
 		}
 	}
 
-	function updateScore(scores) {
-		getScoreElement(statsOne).textContent = scores[0];
-		getScoreElement(statsTwo).textContent = scores[1];
-	}
+	function updatePlayerStats(players) {
+		const playerOne = players[0];
+		const playerTwo = players[1];
 
-	function updateName(names) {
-		getNameElement(statsOne).textContent = names[0];
-		getNameElement(statsTwo).textContent = names[1];
+		getScoreElement(statsOne).textContent = playerOne.score;
+		getScoreElement(statsTwo).textContent = playerTwo.score;
+
+		getNameElement(statsOne).textContent = playerOne.name;
+		getNameElement(statsTwo).textContent = playerTwo.name;
+
+		getValueElement(statsOne).textContent = playerOne.value;
+		getValueElement(statsTwo).textContent = playerTwo.value;
 	}
 
 	// active is 1 for first player, 2 for second player.

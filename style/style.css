@@ -65,3 +65,7 @@ body {
 .red-bg {
 	background-color: red;
 }
+
+.player-value {
+	font-size: 128px;
+}
