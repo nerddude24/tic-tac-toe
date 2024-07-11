@@ -7,14 +7,24 @@
 	const getNameElement = (stats) => stats.querySelector(".player-name");
 	const getValueElement = (stats) => stats.querySelector(".player-value");
 
+	// event handling
 	eventHandler.subscribe("boardChanged", updateBoard);
 	eventHandler.subscribe("statsChanged", updatePlayerStats);
 	eventHandler.subscribe("activePlayerChanged", updateActivePlayer);
 
+	// event listener setup
 	boardCells.forEach((cell, idx) => {
 		cell.addEventListener("click", () => {
 			Game.playTurn(idx);
 		});
+	});
+
+	getNameElement(statsOne).addEventListener("input", (e) => {
+		eventHandler.emit("playerNameChanged", { name: e.target.value, player: 1 });
+	});
+
+	getNameElement(statsTwo).addEventListener("input", (e) => {
+		eventHandler.emit("playerNameChanged", { name: e.target.value, player: 2 });
 	});
 
 	function updateBoard(board) {
@@ -29,9 +39,6 @@
 
 		getScoreElement(statsOne).textContent = playerOne.score;
 		getScoreElement(statsTwo).textContent = playerTwo.score;
-
-		getNameElement(statsOne).textContent = playerOne.name;
-		getNameElement(statsTwo).textContent = playerTwo.name;
 
 		getValueElement(statsOne).textContent = playerOne.value;
 		getValueElement(statsTwo).textContent = playerTwo.value;

@@ -83,10 +83,17 @@ const Game = (function () {
 		return {};
 	}
 
+	const _updatePlayerName = (data) => {
+		if (data.player === 1) playerOne.name = data.name;
+		else playerTwo.name = data.name;
+	};
+
 	let firstPlayer = playerOne;
 	let activePlayer;
 	let playing = false;
 	let movesLeft = 9;
+
+	eventHandler.subscribe("playerNameChanged", _updatePlayerName);
 
 	const getPlaying = () => playing;
 
