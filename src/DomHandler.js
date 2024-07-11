@@ -1,10 +1,10 @@
 (function () {
 	const boardDom = document.querySelector("#board");
 	const boardCells = Array.from(boardDom.children);
-	const scoreOneElement = document.querySelector("#stats1 > .player-score");
-	const scoreTwoElement = document.querySelector("#stats2 > .player-score");
-	const nameOneElement = document.querySelector("#stats1 > .player-name");
-	const nameTwoElement = document.querySelector("#stats2 > .player-name");
+	const statsOne = document.querySelector("#stats1");
+	const statsTwo = document.querySelector("#stats2");
+	const getScoreElement = (stats) => stats.querySelector(".player-score");
+	const getNameElement = (stats) => stats.querySelector(".player-name");
 
 	eventHandler.subscribe("boardChanged", updateBoard);
 	eventHandler.subscribe("scoreChanged", updateScore);
@@ -23,12 +23,12 @@
 	}
 
 	function updateScore(scores) {
-		scoreOneElement.textContent = scores[0];
-		scoreTwoElement.textContent = scores[1];
+		getScoreElement(statsOne).textContent = scores[0];
+		getScoreElement(statsTwo).textContent = scores[1];
 	}
 
 	function updateName(names) {
-		nameOneElement.textContent = names[0];
-		nameTwoElement.textContent = names[1];
+		getNameElement(statsOne).textContent = names[0];
+		getNameElement(statsTwo).textContent = names[1];
 	}
 })();
