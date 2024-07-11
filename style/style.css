@@ -29,3 +29,7 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+
+.board-cell:hover {
+	background-color: #eaeaea;
+}
