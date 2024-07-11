@@ -2,7 +2,7 @@ body {
 	display: grid;
 
 	grid-template-columns: 1fr 2fr 1fr;
-	grid-template-areas: "score1 board score2";
+	grid-template-areas: "stats1 board stats2";
 
 	min-height: 100vh;
 
@@ -40,16 +40,16 @@ body {
 	background-color: #eaeaea;
 }
 
-#score1 {
-	grid-area: score1;
+#stats1 {
+	grid-area: stats1;
 }
 
-#score2 {
-	grid-area: score2;
+#stats2 {
+	grid-area:stats2;
 }
 
-#score1,
-#score2 {
+#stats1,
+#stats2 {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
