@@ -1,10 +1,10 @@
 (function () {
 	const boardDom = document.querySelector("#board");
 	const boardCells = Array.from(boardDom.children);
-	const scoreOneElement = document.querySelector("#stats1 > player-score");
-	const scoreTwoElement = document.querySelector("#stats2 > player-score");
-	const nameOneElement = document.querySelector("#stats1 > player-name");
-	const nameTwoElement = document.querySelector("#stats2 > player-name");
+	const scoreOneElement = document.querySelector("#stats1 > .player-score");
+	const scoreTwoElement = document.querySelector("#stats2 > .player-score");
+	const nameOneElement = document.querySelector("#stats1 > .player-name");
+	const nameTwoElement = document.querySelector("#stats2 > .player-name");
 
 	eventHandler.subscribe("boardChanged", updateBoard);
 	eventHandler.subscribe("scoreChanged", updateScore);

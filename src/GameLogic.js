@@ -72,7 +72,7 @@ const Game = (function () {
 			);
 			return null;
 		}
-		return { name, value };
+		return { name, value, score: 0 };
 	};
 
 	let playing = false;
@@ -100,6 +100,7 @@ const Game = (function () {
 
 	const _finishRound = (msg = "Game is done!") => {
 		playing = false;
+		eventHandler.emit("scoreChanged", [playerOne.score, playerTwo.score]);
 		alert(msg);
 	};
 
@@ -139,6 +140,7 @@ const Game = (function () {
 		Gameboard.fillCell(cellNum, activePlayer.value);
 
 		if (_isActivePlayerWinner()) {
+			activePlayer.score++;
 			_finishRound(`${activePlayer.name} Won!`);
 			return;
 		}
