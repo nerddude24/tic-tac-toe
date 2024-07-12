@@ -159,7 +159,10 @@ const Game = (function () {
 	};
 
 	const playTurn = (cellNum) => {
-		if (!playing) startRound();
+		if (!playing) {
+			startRound();
+			return;
+		}
 		if (!Gameboard.isFillableCell(cellNum)) return;
 
 		movesLeft--;
