@@ -83,23 +83,21 @@ const Game = (function () {
 		return {};
 	}
 
-	const _updatePlayerName = (data) => {
-		if (data.player === 1) playerOne.name = data.name;
-		else playerTwo.name = data.name;
-	};
-
 	let firstPlayer = playerOne;
 	let activePlayer;
 	let playing = false;
 	let movesLeft = 9;
-
-	eventHandler.subscribe("playerNameChanged", _updatePlayerName);
 
 	const getPlaying = () => playing;
 
 	const _getPlayers = () => [playerOne, playerTwo];
 
 	const _isPlayerOneActive = () => activePlayer === playerOne;
+
+	const _updatePlayerName = (data) => {
+		if (data.player === 1) playerOne.name = data.name;
+		else playerTwo.name = data.name;
+	};
 
 	const _swapActivePlayer = () => {
 		activePlayer = _isPlayerOneActive() ? playerTwo : playerOne;
@@ -114,7 +112,17 @@ const Game = (function () {
 		playerTwo.value = tmp;
 	};
 
-	const _finishRound = (msg = "Game is done!") => {
+	const _restartGame = () => {
+		playing = false;
+		playerOne.score = 0;
+		playerTwo.score = 0;
+		Gameboard.clearBoard();
+
+		eventHandler.emit("statsChanged", _getPlayers());
+		eventHandler.emit("activePlayerChanged", 0);
+	};
+
+	const _finishRound = (msg = "Round is done!") => {
 		playing = false;
 		_swapFirstPlayer();
 		eventHandler.emit("statsChanged", _getPlayers());
@@ -140,7 +148,7 @@ const Game = (function () {
 	};
 
 	const startRound = () => {
-		console.log("Game started!");
+		console.log("Round started!");
 
 		Gameboard.clearBoard();
 		movesLeft = 9;
@@ -171,6 +179,10 @@ const Game = (function () {
 
 		_swapActivePlayer();
 	};
+
+	// event subscribing
+	eventHandler.subscribe("playerNameChanged", _updatePlayerName);
+	eventHandler.subscribe("restartGame", _restartGame);
 
 	return { getPlaying, playTurn, startRound };
 })();

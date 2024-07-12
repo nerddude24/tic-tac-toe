@@ -1,5 +1,6 @@
 (function () {
 	const boardDom = document.querySelector("#board");
+	const restartBtn = document.querySelector("#start-btn");
 	const boardCells = Array.from(boardDom.children);
 	const statsOne = document.querySelector("#stats1");
 	const statsTwo = document.querySelector("#stats2");
@@ -27,6 +28,15 @@
 		eventHandler.emit("playerNameChanged", { name: e.target.value, player: 2 });
 	});
 
+	restartBtn.addEventListener("click", () => {
+		if (
+			confirm(
+				"Are you sure you want to restart the game? (scores will be reset)"
+			)
+		)
+			eventHandler.emit("restartGame");
+	});
+
 	function updateBoard(board) {
 		for (let i = 0; i <= 8; i++) {
 			boardCells[i].textContent = board[i];
@@ -44,14 +54,24 @@
 		getValueElement(statsTwo).textContent = playerTwo.value;
 	}
 
-	// active is 1 for first player, 2 for second player.
+	// active is 1 for first player, 2 for second player, and 0 for none.
 	function updateActivePlayer(active) {
-		if (active === 1) {
-			statsOne.classList.add("blue-bg");
-			statsTwo.classList.remove("red-bg");
-		} else {
-			statsOne.classList.remove("blue-bg");
-			statsTwo.classList.add("red-bg");
+		switch (active) {
+			case 1:
+				statsOne.classList.add("blue-bg");
+				statsTwo.classList.remove("red-bg");
+				break;
+			case 2:
+				statsOne.classList.remove("blue-bg");
+				statsTwo.classList.add("red-bg");
+				break;
+			case 0:
+				statsOne.classList.remove("blue-bg");
+				statsTwo.classList.remove("red-bg");
+				break;
+			default:
+				console.error(`Invalid active value! (${active})`);
+				break;
 		}
 	}
 })();
