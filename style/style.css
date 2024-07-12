@@ -2,7 +2,7 @@ body {
 	display: grid;
 
 	grid-template-columns: 1fr 2fr 1fr;
-	grid-template-rows: 50px 1fr;
+	grid-template-rows: 40px 1fr;
 	grid-template-areas: "stats1 button stats2" "stats1 board stats2";
 
 	min-height: 100vh;
@@ -17,12 +17,12 @@ body {
 
 	justify-self: center;
 
-	font-size: 2rem;
+	font-size: 1.5rem;
 	color: white;
 	background-color: black;
 	border: none;
 	border-radius: 16px;
-	width: 50%;
+	width: 35%;
 
 	cursor: pointer;
 }
