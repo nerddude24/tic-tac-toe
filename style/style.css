@@ -2,12 +2,34 @@ body {
 	display: grid;
 
 	grid-template-columns: 1fr 2fr 1fr;
-	grid-template-areas: "stats1 board stats2";
+	grid-template-rows: 50px 1fr;
+	grid-template-areas: "stats1 button stats2" "stats1 board stats2";
 
 	min-height: 100vh;
 
-	padding: 30px;
-	gap: 5rem;
+	padding: 2rem;
+	column-gap: 5rem;
+	row-gap: 1rem;
+}
+
+#start-btn {
+	grid-area: button;
+
+	justify-self: center;
+
+	font-size: 2rem;
+	color: white;
+	background-color: black;
+	border: none;
+	border-radius: 16px;
+	width: 50%;
+
+	cursor: pointer;
+}
+
+#start-btn:hover {
+	box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.4);
+	transition: 0.2s;
 }
 
 #board {
