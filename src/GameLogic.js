@@ -22,7 +22,6 @@ const Gameboard = (function () {
 		}
 
 		if (board[cellNum] !== "") {
-			debugger;
 			console.warn("Cell not empty!");
 			return false;
 		}
